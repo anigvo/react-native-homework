@@ -12,15 +12,41 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import AddIcon from "../../assets/icons/addIcon";
+import CancelIcon from "../../assets/icons/cancelIcon";
 import BackgroundImage from "../../assets/images/background-image.png";
 import BlankImg from "../../assets/images/blank-black.png";
+import { pickImage } from "../../utils/imagePicker";
 
 export default function RegistrationScreen() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [image, setImage] = useState(null);
+  const [isFocused, setIsFocused] = useState({
+    login: false,
+    email: false,
+    password: false,
+  });
+
+  const handleFocus = (inputName) => {
+    setIsFocused({ ...isFocused, [inputName]: true });
+  };
+
+  const handleBlur = (inputName) => {
+    setIsFocused({ ...isFocused, [inputName]: false });
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const imageUpload = async () => {
+    const imageUri = await pickImage();
+    if (imageUri) {
+      setImage(imageUri);
+    }
+  };
+  const cancelImage = () => {
+    setImage(null);
   };
 
   return (
@@ -38,25 +64,56 @@ export default function RegistrationScreen() {
         <KeyboardAvoidingView style={styles.wrap} behavior="padding">
           <View style={styles.imgContainer}>
             <View style={styles.imgWrap}>
-              <Image source={BlankImg} style={styles.img} />
-              <TouchableOpacity style={styles.iconButton}>
-                <AddIcon style={styles.icon} />
-              </TouchableOpacity>
+              {image ? (
+                <Image source={{ uri: image }} style={styles.img} />
+              ) : (
+                <Image source={BlankImg} style={styles.img} />
+              )}
+
+              {!image ? (
+                <TouchableOpacity
+                  style={styles.iconButton}
+                  title="Оберіть аватарку"
+                  onPress={imageUpload}
+                >
+                  <AddIcon style={styles.icon} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.iconButton}
+                  onPress={cancelImage}
+                >
+                  <CancelIcon style={styles.icon} />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
 
           <View style={styles.formContainer}>
             <Text style={styles.h1}>Реєстрація</Text>
 
-            <TextInput style={styles.input} placeholder="Логін" />
             <TextInput
-              style={styles.input}
+              onFocus={() => handleFocus("login")}
+              onBlur={() => handleBlur("login")}
+              style={[styles.input, isFocused.login && styles.focusedInput]}
+              placeholder="Логін"
+            />
+            <TextInput
+              onFocus={() => handleFocus("email")}
+              onBlur={() => handleBlur("email")}
+              style={[styles.input, isFocused.email && styles.focusedInput]}
               placeholder="Адреса електронної пошти"
             />
 
             <View style={styles.passwordWrap}>
               <TextInput
-                style={[styles.input, { flex: 1 }]}
+                onFocus={() => handleFocus("password")}
+                onBlur={() => handleBlur("password")}
+                style={[
+                  styles.input,
+                  { flex: 1 },
+                  isFocused.password && styles.focusedInput,
+                ]}
                 placeholder="Пароль"
                 secureTextEntry={!showPassword}
                 value={password}
@@ -149,6 +206,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#F6F6F6",
     padding: 16,
+  },
+  focusedInput: {
+    borderColor: "#FF6C00",
   },
   passwordWrap: {
     flexDirection: "row",
