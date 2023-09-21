@@ -1,9 +1,7 @@
-
-
-import RegistrationScreen from "./src/components/RegistrationScreen/RegistrationScreen.js";
+import LoginScreen from "./src/screens/LoginScreen.js";
+import RegistrationScreen from "./src/screens/RegistrationScreen.js";
 
 export default function App() {
-  return (
-    <RegistrationScreen />
-  );
+  return <LoginScreen />;
+  // return <RegistrationScreen />;
 }

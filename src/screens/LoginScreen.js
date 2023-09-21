@@ -5,22 +5,16 @@ import {
   View,
   ImageBackground,
   StyleSheet,
-  Image,
   SafeAreaView,
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import AddIcon from "../../assets/icons/addIcon";
-import CancelIcon from "../../assets/icons/cancelIcon";
-import BackgroundImage from "../../assets/images/background-image.png";
-import BlankImg from "../../assets/images/blank-black.png";
-import { pickImage } from "../../utils/imagePicker";
+import BackgroundImage from "../assets/images/background-image.png";
 
-export default function RegistrationScreen() {
+export default function LoginScreen() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [image, setImage] = useState(null);
   const [isFocused, setIsFocused] = useState({
     login: false,
     email: false,
@@ -39,16 +33,6 @@ export default function RegistrationScreen() {
     setShowPassword(!showPassword);
   };
 
-  const imageUpload = async () => {
-    const imageUri = await pickImage();
-    if (imageUri) {
-      setImage(imageUri);
-    }
-  };
-  const cancelImage = () => {
-    setImage(null);
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -61,43 +45,14 @@ export default function RegistrationScreen() {
           backgroundColor="transparent"
           barStyle="dark-content"
         />
-        <KeyboardAvoidingView style={styles.wrap} behavior="padding">
-          <View style={styles.imgContainer}>
-            <View style={styles.imgWrap}>
-              {image ? (
-                <Image source={{ uri: image }} style={styles.img} />
-              ) : (
-                <Image source={BlankImg} style={styles.img} />
-              )}
+        <View style={styles.wrap}>
+          <KeyboardAvoidingView
+            style={styles.formContainer}
+            behavior="padding"
+            enabled
+          >
+            <Text style={styles.h1}>Увійти</Text>
 
-              {!image ? (
-                <TouchableOpacity
-                  style={styles.iconButton}
-                  title="Оберіть аватарку"
-                  onPress={imageUpload}
-                >
-                  <AddIcon style={styles.icon} />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  style={styles.iconButton}
-                  onPress={cancelImage}
-                >
-                  <CancelIcon style={styles.icon} />
-                </TouchableOpacity>
-              )}
-            </View>
-          </View>
-
-          <View style={styles.formContainer}>
-            <Text style={styles.h1}>Реєстрація</Text>
-
-            <TextInput
-              onFocus={() => handleFocus("login")}
-              onBlur={() => handleBlur("login")}
-              style={[styles.input, isFocused.login && styles.focusedInput]}
-              placeholder="Логін"
-            />
             <TextInput
               onFocus={() => handleFocus("email")}
               onBlur={() => handleBlur("email")}
@@ -118,6 +73,7 @@ export default function RegistrationScreen() {
                 secureTextEntry={!showPassword}
                 value={password}
                 onChangeText={(text) => setPassword(text)}
+                autoCapitalize="none"
               />
               <TouchableOpacity
                 onPress={togglePasswordVisibility}
@@ -128,15 +84,17 @@ export default function RegistrationScreen() {
                 </Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </KeyboardAvoidingView>
 
           <View style={styles.submitContainer}>
             <TouchableOpacity style={styles.submitButton}>
-              <Text style={styles.submitButtonText}>Зареєструватися</Text>
+              <Text style={styles.submitButtonText}>Увійти</Text>
             </TouchableOpacity>
-            <Text style={styles.redirectLink}>Вже є акаунт? Увійти</Text>
+            <Text style={styles.redirectLink}>
+              Немає акаунту? Зареєструватися
+            </Text>
           </View>
-        </KeyboardAvoidingView>
+        </View>
       </ImageBackground>
     </SafeAreaView>
   );
@@ -151,10 +109,10 @@ const styles = StyleSheet.create({
   background: {
     width: "100%",
     height: "100%",
-    flex: 1,
     justifyContent: "center",
   },
   wrap: {
+    flex: 1,
     backgroundColor: "#fff",
     position: "absolute",
     bottom: 0,
@@ -162,6 +120,10 @@ const styles = StyleSheet.create({
     height: "66%",
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
+    paddingTop: 32,
+    paddingBottom: 32,
+    paddingLeft: 16,
+    paddingRight: 16,
   },
   h1: {
     color: "#212121",
@@ -169,38 +131,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 24,
   },
-  imgContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 32,
-  },
-  imgWrap: { position: "relative", bottom: 60 },
-  img: {
-    height: 120,
-    width: 120,
-    borderRadius: 20,
-  },
-  icon: {
-    width: 25,
-    height: 25,
-    fill: "#FF6C00",
-  },
-  iconButton: {
-    position: "absolute",
-    right: -16,
-    bottom: 10,
-  },
   formContainer: {
     flexDirection: "column",
-    position: "relative",
-    bottom: 60,
   },
   input: {
     height: 50,
     marginTop: 8,
     marginBottom: 8,
-    marginLeft: 16,
-    marginRight: 16,
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 10,
@@ -216,7 +153,6 @@ const styles = StyleSheet.create({
   },
   showButton: {
     position: "absolute",
-    paddingRight: 16,
     right: 16,
   },
   showButtonText: {
@@ -224,8 +160,6 @@ const styles = StyleSheet.create({
   },
   submitContainer: {
     flexDirection: "column",
-    position: "relative",
-    bottom: 60,
   },
   submitButton: {
     padding: 16,
@@ -233,12 +167,10 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginTop: 35,
     marginBottom: 16,
-    marginLeft: 16,
-    marginRight: 16,
   },
   submitButtonText: {
     textAlign: "center",
     color: "#FFFFFF",
   },
-  redirectLink: { textAlign: "center" },
+  redirectLink: { textAlign: "center", color: "#1B4371" },
 });
