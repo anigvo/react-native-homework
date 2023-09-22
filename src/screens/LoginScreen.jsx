@@ -5,12 +5,13 @@ import {
   View,
   ImageBackground,
   StyleSheet,
-  SafeAreaView,
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
 import BackgroundImage from "../assets/images/background-image.png";
+import { LoginAndRegStyles } from "./LoginAndRegStyles";
+const styles = StyleSheet.create(LoginAndRegStyles);
 
 export default function LoginScreen() {
   const [password, setPassword] = useState("");
@@ -34,7 +35,12 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="height"
+      enabled
+      keyboardVerticalOffset={-132}
+    >
       <ImageBackground
         resizeMode="cover"
         source={BackgroundImage}
@@ -45,12 +51,8 @@ export default function LoginScreen() {
           backgroundColor="transparent"
           barStyle="dark-content"
         />
-        <View style={styles.wrap}>
-          <KeyboardAvoidingView
-            style={styles.formContainer}
-            behavior="padding"
-            enabled
-          >
+        <View style={[styles.wrap, styles.wrapLogin]}>
+          <View style={styles.formContainer}>
             <Text style={styles.h1}>Увійти</Text>
 
             <TextInput
@@ -84,7 +86,7 @@ export default function LoginScreen() {
                 </Text>
               </TouchableOpacity>
             </View>
-          </KeyboardAvoidingView>
+          </View>
 
           <View style={styles.submitContainer}>
             <TouchableOpacity style={styles.submitButton}>
@@ -96,81 +98,6 @@ export default function LoginScreen() {
           </View>
         </View>
       </ImageBackground>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  background: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-  },
-  wrap: {
-    flex: 1,
-    backgroundColor: "#fff",
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    height: "66%",
-    borderTopLeftRadius: 35,
-    borderTopRightRadius: 35,
-    paddingTop: 32,
-    paddingBottom: 32,
-    paddingLeft: 16,
-    paddingRight: 16,
-  },
-  h1: {
-    color: "#212121",
-    fontSize: 30,
-    textAlign: "center",
-    marginBottom: 24,
-  },
-  formContainer: {
-    flexDirection: "column",
-  },
-  input: {
-    height: 50,
-    marginTop: 8,
-    marginBottom: 8,
-    borderWidth: 1,
-    borderColor: "#E8E8E8",
-    borderRadius: 10,
-    backgroundColor: "#F6F6F6",
-    padding: 16,
-  },
-  focusedInput: {
-    borderColor: "#FF6C00",
-  },
-  passwordWrap: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  showButton: {
-    position: "absolute",
-    right: 16,
-  },
-  showButtonText: {
-    color: "#1B4371",
-  },
-  submitContainer: {
-    flexDirection: "column",
-  },
-  submitButton: {
-    padding: 16,
-    backgroundColor: "#FF6C00",
-    borderRadius: 30,
-    marginTop: 35,
-    marginBottom: 16,
-  },
-  submitButtonText: {
-    textAlign: "center",
-    color: "#FFFFFF",
-  },
-  redirectLink: { textAlign: "center", color: "#1B4371" },
-});

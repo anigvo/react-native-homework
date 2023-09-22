@@ -6,16 +6,17 @@ import {
   ImageBackground,
   StyleSheet,
   Image,
-  SafeAreaView,
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import AddIcon from "../assets/icons/addIcon";
-import CancelIcon from "../assets/icons/cancelIcon";
+import { AntDesign } from "@expo/vector-icons";
 import BackgroundImage from "../assets/images/background-image.png";
 import BlankImg from "../assets/images/blank-black.png";
 import { pickImage } from "../utils/imagePicker";
+import { LoginAndRegStyles } from "./LoginAndRegStyles";
+
+const styles = StyleSheet.create(LoginAndRegStyles);
 
 export default function RegistrationScreen() {
   const [password, setPassword] = useState("");
@@ -50,7 +51,12 @@ export default function RegistrationScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="height"
+      enabled
+      keyboardVerticalOffset={-132}
+    >
       <ImageBackground
         resizeMode="cover"
         source={BackgroundImage}
@@ -61,7 +67,7 @@ export default function RegistrationScreen() {
           backgroundColor="transparent"
           barStyle="dark-content"
         />
-        <View style={styles.wrap}>
+        <View style={[styles.wrap, styles.wrapReg]}>
           <View style={styles.imgContainer}>
             <View style={styles.imgWrap}>
               {image ? (
@@ -76,24 +82,20 @@ export default function RegistrationScreen() {
                   title="Оберіть аватарку"
                   onPress={imageUpload}
                 >
-                  <AddIcon style={styles.icon} />
+                  <AntDesign name="pluscircle" size={25} color="#FF6C00" />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
                   style={styles.iconButton}
                   onPress={cancelImage}
                 >
-                  <CancelIcon style={styles.icon} />
+                  <AntDesign name="closecircle" size={25} color="#E8E8E8" />
                 </TouchableOpacity>
               )}
             </View>
           </View>
 
-          <KeyboardAvoidingView
-            style={styles.formContainer}
-            behavior="padding"
-            enabled
-          >
+          <View style={styles.formContainer}>
             <Text style={styles.h1}>Реєстрація</Text>
 
             <TextInput
@@ -133,7 +135,7 @@ export default function RegistrationScreen() {
                 </Text>
               </TouchableOpacity>
             </View>
-          </KeyboardAvoidingView>
+          </View>
 
           <View style={styles.submitContainer}>
             <TouchableOpacity style={styles.submitButton}>
@@ -143,106 +145,6 @@ export default function RegistrationScreen() {
           </View>
         </View>
       </ImageBackground>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  background: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-  },
-  wrap: {
-    backgroundColor: "#fff",
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    height: "66%",
-    borderTopLeftRadius: 35,
-    borderTopRightRadius: 35,
-    paddingTop: 92,
-    paddingBottom: 32,
-    paddingLeft: 16,
-    paddingRight: 16,
-  },
-  h1: {
-    color: "#212121",
-    fontSize: 30,
-    textAlign: "center",
-    marginBottom: 24,
-  },
-  imgContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 32,
-    position: "absolute",
-    top: -60,
-    left: "50%",
-    transform: [{ translateX: -47.5 }],
-  },
-  imgWrap: { position: "relative", bottom: 0 },
-  img: {
-    height: 120,
-    width: 120,
-    borderRadius: 20,
-  },
-  icon: {
-    width: 25,
-    height: 25,
-    fill: "#FF6C00",
-  },
-  iconButton: {
-    position: "absolute",
-    right: -16,
-    bottom: 10,
-  },
-  formContainer: {
-    flexDirection: "column",
-
-  },
-  input: {
-    height: 50,
-    marginTop: 8,
-    marginBottom: 8,
-    borderWidth: 1,
-    borderColor: "#E8E8E8",
-    borderRadius: 10,
-    backgroundColor: "#F6F6F6",
-    padding: 16,
-  },
-  focusedInput: {
-    borderColor: "#FF6C00",
-  },
-  passwordWrap: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  showButton: {
-    position: "absolute",
-    right: 16,
-  },
-  showButtonText: {
-    color: "#1B4371",
-  },
-  submitContainer: {
-    flexDirection: "column",
-  },
-  submitButton: {
-    padding: 16,
-    backgroundColor: "#FF6C00",
-    borderRadius: 30,
-    marginTop: 35,
-    marginBottom: 16,
-  },
-  submitButtonText: {
-    textAlign: "center",
-    color: "#FFFFFF",
-  },
-  redirectLink: { textAlign: "center", color: "#1B4371" },
-});
