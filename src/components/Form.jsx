@@ -10,6 +10,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import BlankImg from "../assets/images/blank-black.png";
 import { pickImage } from "../utils/imagePicker";
+import { useFonts } from "expo-font";
 
 export const Form = ({ registration = true, title, buttonText, linkText }) => {
   const [login, setLogin] = useState("");
@@ -23,6 +24,15 @@ export const Form = ({ registration = true, title, buttonText, linkText }) => {
     email: false,
     password: false,
   });
+
+  const [fontsLoaded] = useFonts({
+    "Roboto-Medium": require("../assets/fonts/Roboto-Medium.otf"),
+    "Roboto-Regular": require("../assets/fonts/Roboto-Regular.otf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const cancelImage = () => {
     setImage(null);
@@ -163,6 +173,8 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: "center",
     marginBottom: 24,
+    fontFamily: "Roboto-Medium",
+    fontSize: 30,
   },
   formContainer: {
     flexDirection: "column",
@@ -176,6 +188,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#F6F6F6",
     padding: 16,
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
   },
   focusedInput: {
     borderColor: "#FF6C00",
@@ -191,6 +205,8 @@ const styles = StyleSheet.create({
   },
   showButtonText: {
     color: "#1B4371",
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
   },
   submitContainer: {
     flexDirection: "column",
@@ -205,8 +221,15 @@ const styles = StyleSheet.create({
   submitButtonText: {
     textAlign: "center",
     color: "#FFFFFF",
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
   },
-  redirectLink: { textAlign: "center", color: "#1B4371" },
+  redirectLink: {
+    textAlign: "center",
+    color: "#1B4371",
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+  },
   imgContainer: {
     alignItems: "center",
     justifyContent: "center",
