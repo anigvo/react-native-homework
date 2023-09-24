@@ -3,8 +3,6 @@ export const Wrap = ({ margin, padding, children }) => {
   const styles = StyleSheet.create({
     wrap: {
       backgroundColor: "#fff",
-      position: "absolute",
-      bottom: 0,
       width: "100%",
       marginTop: margin,
       borderTopLeftRadius: 35,

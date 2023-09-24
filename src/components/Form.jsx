@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   Text,
   View,
@@ -12,7 +13,13 @@ import BlankImg from "../assets/images/blank-black.png";
 import { pickImage } from "../utils/imagePicker";
 import { useFonts } from "expo-font";
 
-export const Form = ({ registration = true, title, buttonText, linkText }) => {
+export const Form = ({
+  registration = true,
+  title,
+  buttonText,
+  linkText,
+  nav,
+}) => {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +31,7 @@ export const Form = ({ registration = true, title, buttonText, linkText }) => {
     email: false,
     password: false,
   });
-
+  const navigation = useNavigation();
   const [fontsLoaded] = useFonts({
     "Roboto-Medium": require("../assets/fonts/Roboto-Medium.otf"),
     "Roboto-Regular": require("../assets/fonts/Roboto-Regular.otf"),
@@ -76,6 +83,10 @@ export const Form = ({ registration = true, title, buttonText, linkText }) => {
       }
       console.log({ email, password });
     }
+    navigation.navigate("Bottom", {
+      screen: "PostsScreen",
+      params: { email },
+    });
     setLogin("");
     setEmail("");
     setPassword("");
@@ -161,7 +172,9 @@ export const Form = ({ registration = true, title, buttonText, linkText }) => {
         <TouchableOpacity style={styles.submitButton} onPress={onSubmit}>
           <Text style={styles.submitButtonText}>{buttonText}</Text>
         </TouchableOpacity>
-        <Text style={styles.redirectLink}>{linkText}</Text>
+        <TouchableOpacity onPress={nav}>
+          <Text style={styles.redirectLink}>{linkText}</Text>
+        </TouchableOpacity>
       </View>
     </>
   );
